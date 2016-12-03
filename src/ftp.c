@@ -106,7 +106,7 @@ static s32 write_reply(client_t *client, u16 code, char *msg) {
 	char * msgbuf = (char *) malloc(msglen + 1);
 	if (msgbuf == NULL) return -ENOMEM;
 	sprintf(msgbuf, "%u %s\r\n", code, msg);
-	console_printf("Wrote reply: %s", msgbuf);
+	console_printf("[->] %s", msgbuf);
 	s32 ret = send_exact(client->socket, msgbuf, msglen);
 	free(msgbuf);
 	return ret;
@@ -676,7 +676,7 @@ static s32 process_command(client_t *client, char *cmd_line) {
 		return 0;
 	}
 
-	console_printf("Got command: %s\n", cmd_line);
+	console_printf("[<-] %s\n", cmd_line);
 
 	const char **commands = unauthenticated_commands;
 	const ftp_command_handler *handlers = unauthenticated_handlers;
