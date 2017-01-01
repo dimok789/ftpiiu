@@ -191,8 +191,12 @@ FILE *vrt_fopen(char *cwd, char *path, char *mode) {
 
 int vrt_stat(char *cwd, char *path, struct stat *st) {
 	char *real_path = to_real_path(cwd, path);
-	if (!real_path) return -1;
-	else if (!*real_path) {
+	if (!real_path)
+    {
+        return -1;
+    }
+	else if (!*real_path || (strcmp(path, ".") == 0) || (strlen(cwd) == 1) || ((strlen(cwd) > 1) && (strcmp(path, "..") == 0)))
+    {
 		st->st_mode = S_IFDIR;
 		st->st_size = 31337;
 		return 0;

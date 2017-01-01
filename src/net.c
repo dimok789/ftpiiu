@@ -34,9 +34,9 @@ misrepresented as being the original software.
 #include "dynamic_libs/socket_functions.h"
 #include "net.h"
 
-#define MAX_NET_BUFFER_SIZE (60*1024)
+#define MAX_NET_BUFFER_SIZE (64*1024)
 #define MIN_NET_BUFFER_SIZE 4096
-#define FREAD_BUFFER_SIZE (60*1024)
+#define FREAD_BUFFER_SIZE (64*1024)
 
 extern u32 hostIpAddress;
 

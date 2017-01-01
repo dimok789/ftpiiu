@@ -105,6 +105,9 @@ extern void (* DCFlushRange)(const void *addr, u32 length);
 extern void (* ICInvalidateRange)(const void *addr, u32 length);
 extern void* (* OSEffectiveToPhysical)(const void*);
 extern int (* __os_snprintf)(char* s, int n, const char * format, ...);
+extern int (*IOS_Ioctl)(int fd, unsigned int request, void *input_buffer,unsigned int input_buffer_len, void *output_buffer, unsigned int output_buffer_len);
+extern int (*IOS_Open)(char *path, unsigned int mode);
+extern int (*IOS_Close)(int fd);
 
 extern void (*OSScreenInit)(void);
 extern unsigned int (*OSScreenGetBufferSizeEx)(unsigned int bufferNum);

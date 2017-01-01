@@ -2,6 +2,9 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <gctypes.h>
+#include <iosuhax.h>
+#include <iosuhax_devoptab.h>
 #include "dynamic_libs/os_functions.h"
 #include "dynamic_libs/fs_functions.h"
 #include "dynamic_libs/gx2_functions.h"
@@ -109,6 +112,27 @@ int Menu_Main(void)
     log_printf("Mount SD partition\n");
     mount_sd_fat("sd");
 
+    int res = IOSUHAX_Open();
+    if(res < 0)
+    {
+        log_printf("IOSUHAX_open failed\n");
+    }
+
+    int fsaFd = IOSUHAX_FSA_Open();
+    if(fsaFd < 0)
+    {
+        log_printf("IOSUHAX_FSA_Open failed\n");
+    }
+
+    mount_fs("slccmpt01", fsaFd, "/dev/slccmpt01", "/vol/storage_slccmpt01");
+    mount_fs("storage_odd_tickets", fsaFd, "/dev/odd01", "/vol/storage_odd_tickets");
+    mount_fs("storage_odd_updates", fsaFd, "/dev/odd02", "/vol/storage_odd_updates");
+    mount_fs("storage_odd_content", fsaFd, "/dev/odd03", "/vol/storage_odd_content");
+    mount_fs("storage_odd_content2", fsaFd, "/dev/odd04", "/vol/storage_odd_content2");
+    mount_fs("storage_slc", fsaFd, NULL, "/vol/system");
+    mount_fs("storage_mlc", fsaFd, NULL, "/vol/storage_mlc01");
+    mount_fs("storage_usb", fsaFd, NULL, "/vol/storage_usb01");
+
 	for(int i = 0; i < MAX_CONSOLE_LINES_TV; i++)
         consoleArrayTv[i] = NULL;
 
@@ -194,6 +218,18 @@ int Menu_Main(void)
 
     log_printf("Unmount SD\n");
     unmount_sd_fat("sd");
+
+    unmount_fs("slccmpt01");
+    unmount_fs("storage_odd_tickets");
+    unmount_fs("storage_odd_updates");
+    unmount_fs("storage_odd_content");
+    unmount_fs("storage_odd_content2");
+    unmount_fs("storage_slc");
+    unmount_fs("storage_mlc");
+    unmount_fs("storage_usb");
+    IOSUHAX_FSA_Close(fsaFd);
+    IOSUHAX_Close();
+
     log_printf("Release memory\n");
     //memoryRelease();
     log_deinit();
