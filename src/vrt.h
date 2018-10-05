@@ -30,13 +30,16 @@ extern "C"{
 #endif
 
 #include <stdio.h>
+#include <stdint.h>
+#include <sys/stat.h>
+#include <sys/param.h>
 #include <sys/dirent.h>
 
 typedef struct
 {
 	DIR *dir;
 	char *path;
-	u8 virt_root;
+	uint8_t virt_root;
 } DIR_P;
 
 char *to_real_path(char *virtual_cwd, char *virtual_path);

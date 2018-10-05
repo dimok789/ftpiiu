@@ -34,7 +34,8 @@
 extern "C"{
 #endif
 
-#include <gctypes.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct {
 	char *name;
@@ -44,7 +45,7 @@ typedef struct {
 } VIRTUAL_PARTITION;
 
 extern VIRTUAL_PARTITION * VIRTUAL_PARTITIONS;
-extern u8 MAX_VIRTUAL_PARTITIONS;
+extern uint8_t MAX_VIRTUAL_PARTITIONS;
 
 void VirtualMountDevice(const char * devicepath);
 void AddVirtualPath(const char *name, const char *alias, const char *prefix);
