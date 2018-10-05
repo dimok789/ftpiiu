@@ -30,7 +30,7 @@
 #include <string.h>
 #include "virtualpath.h"
 
-u8 MAX_VIRTUAL_PARTITIONS = 0;
+uint8_t MAX_VIRTUAL_PARTITIONS = 0;
 VIRTUAL_PARTITION * VIRTUAL_PARTITIONS = NULL;
 
 void VirtualMountDevice(const char * path)
@@ -93,12 +93,12 @@ void AddVirtualPath(const char *name, const char *alias, const char *prefix)
 
 void MountVirtualDevices()
 {
-    VirtualMountDevice("sd:/");
+	AddVirtualPath("sd", "/sd", "/vol/external01/");
 }
 
 void UnmountVirtualPaths()
 {
-	u32 i = 0;
+	uint32_t i = 0;
 	for(i = 0; i < MAX_VIRTUAL_PARTITIONS; i++)
 	{
 		if(VIRTUAL_PARTITIONS[i].name)

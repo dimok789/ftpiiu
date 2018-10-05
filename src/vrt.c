@@ -28,7 +28,8 @@ misrepresented as being the original software.
 #include <string.h>
 #include <sys/dirent.h>
 #include <unistd.h>
-#include <gctypes.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #include "virtualpath.h"
 #include "vrt.h"
@@ -49,7 +50,7 @@ static char *virtual_abspath(char *virtual_cwd, char *virtual_path) {
 	*normalised_path = '\0';
 	char *curr_dir = normalised_path;
 
-	u32 state = 0; // 0:start, 1:slash, 2:dot, 3:dotdot
+	uint32_t state = 0; // 0:start, 1:slash, 2:dot, 3:dotdot
 	char *token = path;
 	while (1) {
 		switch (state) {
@@ -87,7 +88,7 @@ static char *virtual_abspath(char *virtual_cwd, char *virtual_path) {
 		token++;
 	}
 
-	u32 end = strlen(normalised_path);
+	uint32_t end = strlen(normalised_path);
 	while (end > 1 && normalised_path[end - 1] == '/') {
 		normalised_path[--end] = '\x00';
 	}
@@ -124,7 +125,7 @@ char *to_real_path(char *virtual_cwd, char *virtual_path) {
 	}
 
 	const char *prefix = NULL;
-	u32 i;
+	uint32_t i;
 	for (i = 0; i < MAX_VIRTUAL_PARTITIONS; i++) {
 		VIRTUAL_PARTITION *partition = VIRTUAL_PARTITIONS + i;
 		const char *alias = partition->alias;
@@ -156,7 +157,7 @@ char *to_real_path(char *virtual_cwd, char *virtual_path) {
 
 typedef void * (*path_func)(char *path, ...);
 
-static void *with_virtual_path(void *virtual_cwd, void *void_f, char *virtual_path, s32 failed, ...) {
+static void *with_virtual_path(void *virtual_cwd, void *void_f, char *virtual_path, int32_t failed, ...) {
 	char *path = to_real_path(virtual_cwd, virtual_path);
 	if (!path || !*path) return (void *)failed;
 
@@ -287,7 +288,7 @@ struct dirent *vrt_readdir(DIR_P *pDir) {
 
 	DIR *iter = pDir->dir;
 	if (pDir->virt_root) {
-		for (; (u32)iter->position < MAX_VIRTUAL_PARTITIONS; iter->position++) {
+		for (; (uint32_t)iter->position < MAX_VIRTUAL_PARTITIONS; iter->position++) {
 			VIRTUAL_PARTITION *partition = VIRTUAL_PARTITIONS + (int)iter->position;
 			if (partition->inserted) {
 				iter->fileData.d_type = DT_DIR;
